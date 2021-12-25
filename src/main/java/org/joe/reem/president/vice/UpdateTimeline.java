@@ -31,7 +31,7 @@ public class UpdateTimeline extends ScheduledService<Void>
             {
                 Platform.runLater(() ->
                 {
-                    try { resetTimeline(); }
+                    try { resetTimeline(); } // TODO timeline updates, but if a new user registers, the who to follow list doesn't update to reflect the new unfollowed user
                     catch (IOException | ClassNotFoundException e) {e.printStackTrace();}
                 });
                 return null;
