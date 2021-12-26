@@ -26,7 +26,7 @@ public class StreamManager
      */
     private void sendMessage(final String message) throws IOException
     {
-        ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
+        var outStream = new ObjectOutputStream(socket.getOutputStream());
 
         outStream.writeObject(new JabberMessage(message));
         outStream.flush();
@@ -38,7 +38,7 @@ public class StreamManager
      */
     private JabberMessage getReply() throws IOException, ClassNotFoundException
     {
-        ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+        var inStream = new ObjectInputStream(socket.getInputStream());
         return (JabberMessage) inStream.readObject();
     }
 }

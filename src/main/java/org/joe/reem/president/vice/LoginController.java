@@ -56,10 +56,10 @@ public class LoginController
     private void switchScene(final ActionEvent event) throws IOException
     {
         ((Node)event.getSource()).getScene().getWindow().hide(); //hide the current scene
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientMain.class.getResource("MainPage.fxml")); //get the fxml file info
-        Scene scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
+        var fxmlLoader = new FXMLLoader(ClientMain.class.getResource("MainPage.fxml")); //get the fxml file info
+        var scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
 
-        Stage stage = new Stage(); //instantiate new stage object
+        var stage = new Stage(); //instantiate new stage object
         stage.setTitle("Welcome " + username.getText()); //setting the toolbar title
         stage.setResizable(false); //not allowing stage to be resized
         stage.setScene(scene); //add the scene to the stage

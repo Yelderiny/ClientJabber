@@ -15,8 +15,8 @@ public class ClientMain extends Application
     {
         SocketConnection.setSocket(new Socket("localhost", 44445)); //establishing socket connection
 
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientMain.class.getResource("Login.fxml")); //get the fxml file info
-        Scene scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
+        var fxmlLoader = new FXMLLoader(ClientMain.class.getResource("Login.fxml")); //get the fxml file info
+        var scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
 
         stage.setTitle("Jabber!"); //setting the toolbar title
         stage.setResizable(false); //not allowing stage to be resized

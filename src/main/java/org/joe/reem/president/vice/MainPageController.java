@@ -38,7 +38,7 @@ public class MainPageController implements Initializable
             setTimeline(getServerInfo("timeline")); //initialize the timeline
             setWhoToFollow(getServerInfo("users")); //initialize the users to follow
 
-            UpdateTimeline service = new UpdateTimeline(timelineBox);
+            var service = new UpdateMainPage(timelineBox, followBox);
             service.setPeriod(Duration.seconds(5)); //set the interval between executions
             service.start();
 
@@ -103,20 +103,20 @@ public class MainPageController implements Initializable
                 String username = arr.get(0);
 
                 //create user label
-                Label user = new Label("     " + username + "     ");
+                var user = new Label("     " + username + "     ");
                 user.setId(username);
                 user.prefHeight(50);
                 user.setStyle("-fx-wrap-text: true");
 
                 //create the follow button
-                Button follow = new Button("follow");
+                var follow = new Button("follow");
                 follow.setId(username);
 
-                HBox userJab = new HBox();
+                var userJab = new HBox();
                 userJab.getChildren().add(user); //add label to Hbox
                 HBox.setHgrow(user, Priority.ALWAYS); //grows according to the size of the contents within
 
-                Region region = new Region();
+                var region = new Region();
                 region.setPrefWidth(1); //create a space between the label and the button
 
                 userJab.getChildren().addAll(region, follow); //add region and follow button
@@ -160,23 +160,23 @@ public class MainPageController implements Initializable
                 String username = arr.get(0);
                 String jab = arr.get(1);
                 String jabID =arr.get(2);
-                AtomicInteger likes = new AtomicInteger(Integer.parseInt(arr.get(3)));
+                var likes = new AtomicInteger(Integer.parseInt(arr.get(3)));
 
                 //create jab label
-                Label user = new Label("      " + username + ": " + jab + "     ");
+                var user = new Label("      " + username + ": " + jab + "     ");
                 user.setId(jabID);
                 user.prefHeight(50);
                 user.setStyle("-fx-wrap-text: true"); //if longer than width, go to the next line
 
                 //create like button
-                Button like = new Button(likes + " like");
+                var like = new Button(likes + " like");
                 like.setId(jabID);
 
-                HBox userJab = new HBox();
+                var userJab = new HBox();
                 userJab.getChildren().add(user); //add label to Hbox
                 HBox.setHgrow(user, Priority.ALWAYS); //grows according to the size of the contents within
 
-                Region region = new Region();
+                var region = new Region();
                 region.setPrefWidth(1); //create a space between the label and the button
 
                 userJab.getChildren().addAll(region, like); //add region and like button
@@ -233,10 +233,10 @@ public class MainPageController implements Initializable
     private void switchScene(final ActionEvent event) throws IOException
     {
         ((Node)event.getSource()).getScene().getWindow().hide(); //hide the current scene
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientMain.class.getResource("Login.fxml")); //get the fxml file info
-        Scene scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
+        var fxmlLoader = new FXMLLoader(ClientMain.class.getResource("Login.fxml")); //get the fxml file info
+        var scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
 
-        Stage stage = new Stage(); //instantiate new stage object
+        var stage = new Stage(); //instantiate new stage object
         stage.setTitle("Jabber!"); //setting the toolbar title
         stage.setResizable(false); //not allowing stage to be resized
         stage.setScene(scene); //add the scene to the stage
