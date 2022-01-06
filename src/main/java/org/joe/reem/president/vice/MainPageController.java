@@ -71,9 +71,6 @@ public class MainPageController extends ScheduledService<Void> implements Initia
         };
     }
 
-    /**
-     * Sends the desired action to the server and posts a jab on the user timeline
-     */
     @FXML
     protected void onPostButtonClick()
     {
@@ -95,10 +92,6 @@ public class MainPageController extends ScheduledService<Void> implements Initia
         });
     }
 
-    /**
-     * Sends the desired action to the server and signs them out of the application
-     * @param event the sign-out button click
-     */
     @FXML
     protected void onSignOutButtonClick(final ActionEvent event) throws IOException, ClassNotFoundException
     {

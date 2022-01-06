@@ -6,18 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="674.0" prefWidth="954.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.joe.reem.president.vice.SignupController">
+<AnchorPane prefHeight="674.0" prefWidth="954.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.joe.reem.president.vice.SignupController">
    <Label layoutX="380.0" layoutY="161.0" text="Sign-Up to Jabber">
       <font>
-         <Font size="25.0"/>
+         <Font size="25.0" />
       </font>
    </Label>
-   <TextField fx:id="username" layoutX="422.0" layoutY="303.0" promptText="Username" translateX="-25.0"/>
-   <TextField fx:id="eMail" layoutX="317.0" layoutY="351.0" promptText="e-Mail" translateX="-25.0"/>
-   <TextField fx:id="pass" layoutX="477.0" layoutY="351.0" promptText="Password" translateX="25.0"/>
-   <Button layoutX="445.0" layoutY="413.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign-Up"/>
-   <Label fx:id="notice" layoutX="161.0" layoutY="483.0" prefHeight="17.0" prefWidth="631.0" textAlignment="CENTER"
-          visible="false"/>
-   <Button layoutX="42.0" layoutY="31.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt; Back"/>
+   <TextField fx:id="username" layoutX="422.0" layoutY="303.0" promptText="Username" translateX="-25.0" />
+   <TextField fx:id="eMail" layoutX="317.0" layoutY="351.0" promptText="e-Mail" translateX="-25.0" />
+   <TextField fx:id="pass" layoutX="477.0" layoutY="351.0" promptText="Password" translateX="25.0" />
+   <Button layoutX="445.0" layoutY="413.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign-Up" />
+   <Label fx:id="notice" layoutX="161.0" layoutY="483.0" prefHeight="17.0" prefWidth="631.0" textAlignment="CENTER" visible="false" />
+   <Button layoutX="42.0" layoutY="31.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt; Back" />
 </AnchorPane>
