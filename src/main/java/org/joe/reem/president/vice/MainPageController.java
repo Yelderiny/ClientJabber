@@ -1,15 +1,20 @@
 package org.joe.reem.president.vice;
 
 import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -23,7 +28,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MainPageController implements Initializable
+public class MainPageController extends ScheduledService<Void> implements Initializable
 {
     private final StreamManager stream = new StreamManager();
     @FXML private VBox followBox;
@@ -38,11 +43,32 @@ public class MainPageController implements Initializable
             setTimeline(getServerInfo("timeline")); //initialize the timeline
             setWhoToFollow(getServerInfo("users")); //initialize the users to follow
 
-            var service = new UpdateMainPage(timelineBox, followBox);
-            service.setPeriod(Duration.seconds(5)); //set the interval between executions
-            service.start();
+            setPeriod(Duration.seconds(5)); //set the interval between executions
+            start();
 
         } catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+    }
+
+    @Override
+    protected Task<Void> createTask()
+    {
+        return new Task<>()
+        {
+            @Override
+            protected Void call()
+            {
+                Platform.runLater(() ->
+                {
+                    try
+                    {
+                        resetTimeline(); //reset timeline
+                        resetWhoToFollow(); //reset who to follow suggestions
+                    }
+                    catch (IOException | ClassNotFoundException e) {e.printStackTrace();}
+                });
+                return null;
+            }
+        };
     }
 
     /**
@@ -70,15 +96,6 @@ public class MainPageController implements Initializable
     }
 
     /**
-     * Resets the timeline
-     */
-    private void resetTimeline() throws IOException, ClassNotFoundException
-    {
-        timelineBox.getChildren().clear(); //clear the timeline
-        setTimeline(getServerInfo("timeline")); //reset the timeline
-    }
-
-    /**
      * Sends the desired action to the server and signs them out of the application
      * @param event the sign-out button click
      */
@@ -90,6 +107,24 @@ public class MainPageController implements Initializable
     }
 
     /**
+     * Resets the timeline
+     */
+    private void resetTimeline() throws IOException, ClassNotFoundException
+    {
+        timelineBox.getChildren().clear(); //clear the timeline
+        setTimeline(getServerInfo("timeline")); //reset the timeline
+    }
+
+    /**
+     * Resets the who to follow list
+     */
+    private void resetWhoToFollow() throws IOException, ClassNotFoundException
+    {
+        followBox.getChildren().clear(); //clear the timeline
+        setWhoToFollow(getServerInfo("users")); //reset the timeline
+    }
+
+    /**
      * For every user not followed, extract its elements, make a space for it on the GUI and display it
      * @param whoToFollow arraylist of users not followed
      */
@@ -97,6 +132,14 @@ public class MainPageController implements Initializable
     {
         Platform.runLater(() ->
         {
+            //add VBox Label
+            var followLabel = new Label("Follow these motherfuckers");
+            followLabel.setPrefSize(followBox.getPrefWidth(), 50); //set the button to span the width of the VBox
+            followLabel.setAlignment(Pos.CENTER); //center the label
+
+            followBox.getChildren().add(followLabel); //add the label to the Vbox
+
+
             for (ArrayList<String> arr : whoToFollow)
             {
                 //extract elements
@@ -108,9 +151,19 @@ public class MainPageController implements Initializable
                 user.prefHeight(50);
                 user.setStyle("-fx-wrap-text: true");
 
+                //create the image
+                var img = new Image("file:Follow.png");
+
+                var imgView = new ImageView(img);
+                imgView.setFitHeight(25);
+                imgView.setFitWidth(25);
+                imgView.preserveRatioProperty();
+
                 //create the follow button
                 var follow = new Button("follow");
                 follow.setId(username);
+                follow.setGraphic(imgView);
+
 
                 var userJab = new HBox();
                 userJab.getChildren().add(user); //add label to Hbox
@@ -154,6 +207,13 @@ public class MainPageController implements Initializable
     {
         Platform.runLater(() ->
         {
+            //add VBox Label
+            var timelineLabel = new Label("Here's what you did in your useless life, bitch");
+            timelineLabel.setPrefSize(timelineBox.getPrefWidth(), 50); //set the button to span the width of the VBox
+            timelineLabel.setAlignment(Pos.CENTER); //center the label
+
+            timelineBox.getChildren().add(timelineLabel); //add the label to the Vbox
+
             for (ArrayList<String> arr : timelineInfo)
             {
                 //extract elements
@@ -168,12 +228,21 @@ public class MainPageController implements Initializable
                 user.prefHeight(50);
                 user.setStyle("-fx-wrap-text: true"); //if longer than width, go to the next line
 
+                //create the image
+                var img = new Image("file:FullHeart.jpg");
+
+                var imgView = new ImageView(img);
+                imgView.setFitHeight(25);
+                imgView.setFitWidth(25);
+                imgView.preserveRatioProperty();
+
                 //create like button
                 var like = new Button(likes + " like");
                 like.setId(jabID);
+                like.setGraphic(imgView);
 
                 var userJab = new HBox();
-                userJab.getChildren().add(user); //add label to Hbox
+                userJab.getChildren().add(user); //add label to HBox
                 HBox.setHgrow(user, Priority.ALWAYS); //grows according to the size of the contents within
 
                 var region = new Region();
@@ -197,6 +266,11 @@ public class MainPageController implements Initializable
                     if (reply.equals("posted"))
                     {
                         likes.getAndIncrement(); //increment the likes
+                        like.setText(likes + " like"); //change the button
+                    }
+                    else if (reply.equals("unposted"))
+                    {
+                        likes.getAndDecrement(); //decrement the likes
                         like.setText(likes + " like"); //change the button
                     }
                 });

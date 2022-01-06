@@ -18,7 +18,7 @@
                <content>
                   <VBox fx:id="followBox" prefHeight="608.0" prefWidth="449.0">
                      <children>
-                        <Label fx:id="followButton" alignment="CENTER" prefHeight="17.0" prefWidth="450.0" text="Follow these motherfuckers" />
+                        <Label fx:id="followLabel" alignment="CENTER" prefHeight="17.0" prefWidth="450.0" text="Follow these motherfuckers" />
                      </children>
                   </VBox>
                </content>
@@ -27,7 +27,7 @@
                <content>
                   <VBox fx:id="timelineBox" prefHeight="608.0" prefWidth="457.0">
                      <children>
-                        <Label fx:id="timelineButton" alignment="CENTER" prefHeight="17.0" prefWidth="463.0" text="Here's what you did in your useless life bitch" />
+                        <Label fx:id="timelineLabel" alignment="CENTER" prefHeight="17.0" prefWidth="463.0" text="Here's what you did in your useless life bitch" />
                      </children>
                   </VBox>
                </content>

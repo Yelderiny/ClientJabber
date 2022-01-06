@@ -16,6 +16,7 @@ public class LoginController
 {
     @FXML private Label displayMsg;
     @FXML private TextField username;
+    @FXML private TextField password;
     private final StreamManager stream = new StreamManager();
 
 
@@ -30,16 +31,31 @@ public class LoginController
     private void buttonHelper(final String message, final ActionEvent event) throws IOException, ClassNotFoundException
     {
         //no text was entered in text field
-        if (Objects.equals(username.getText(), ""))
+        if (username.getText().equals("") && !password.getText().equals(""))
         {
             displayMsg.setText("Enter a username, bro");
             displayMsg.setVisible(true); //show the text
         }
+        else if (!username.getText().equals("") && password.getText().equals(""))
+        {
+            displayMsg.setText("Enter a password, loser");
+            displayMsg.setVisible(true);
+        }
+        else if (username.getText().isEmpty() && password.getText().isEmpty())
+        {
+            displayMsg.setText("You didn't write anything you waste of utter space");
+            displayMsg.setVisible(true);
+        }
         else
         {
-            JabberMessage reply = stream.exchange(message + " " + username.getText()); //send the message and get the reply from the server
+            JabberMessage reply = stream.exchange(message + " " + username.getText() + " " + password.getText()); //send the message and get the reply from the server
 
             if (reply.getMessage().equals("signedin")) switchScene(event); //got the reply, switch the scene to the main page
+            else if (reply.getMessage().equals("incorrect-pass"))
+            {
+                displayMsg.setText("Incorrect Password. What kind of dumbass doesn't know his own password? ");
+                displayMsg.setVisible(true);
+            }
             else
             {
                 displayMsg.setText("Action failed. This must be embarrassing for you bro");
