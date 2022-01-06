@@ -133,7 +133,7 @@ public class MainPageController extends ScheduledService<Void> implements Initia
         Platform.runLater(() ->
         {
             //add VBox Label
-            var followLabel = new Label("Follow these motherfuckers");
+            var followLabel = new Label("People to follow");
             followLabel.setPrefSize(followBox.getPrefWidth(), 50); //set the button to span the width of the VBox
             followLabel.setAlignment(Pos.CENTER); //center the label
 
@@ -208,7 +208,7 @@ public class MainPageController extends ScheduledService<Void> implements Initia
         Platform.runLater(() ->
         {
             //add VBox Label
-            var timelineLabel = new Label("Here's what you did in your useless life, bitch");
+            var timelineLabel = new Label("Your jabs");
             timelineLabel.setPrefSize(timelineBox.getPrefWidth(), 50); //set the button to span the width of the VBox
             timelineLabel.setAlignment(Pos.CENTER); //center the label
 

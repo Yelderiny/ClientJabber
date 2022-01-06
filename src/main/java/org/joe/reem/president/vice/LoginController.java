@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class LoginController
 {
@@ -20,45 +19,42 @@ public class LoginController
     private final StreamManager stream = new StreamManager();
 
 
-    @FXML protected void onSignInButtonClick(final ActionEvent event) throws IOException, ClassNotFoundException { buttonHelper("signin", event); }
-    @FXML protected void onRegisterButtonClick(final ActionEvent event) throws IOException, ClassNotFoundException { buttonHelper("register", event); }
-
-    /**
-     * Sends the desired action to the server and signs the user either in or up if there are no issues
-     * @param message an indicator of whether this is a sign-up or sign-in action
-     * @param event the button click
-     */
-    private void buttonHelper(final String message, final ActionEvent event) throws IOException, ClassNotFoundException
+    @FXML protected void onRegisterButtonClick(final ActionEvent event) throws IOException { switchScene(event, "Signup.fxml"); }
+    @FXML protected void onSignInButtonClick(final ActionEvent event) throws IOException, ClassNotFoundException
     {
-        //no text was entered in text field
-        if (username.getText().equals("") && !password.getText().equals(""))
+        //username field is empty
+        if (username.getText().isEmpty() && !password.getText().isEmpty())
         {
-            displayMsg.setText("Enter a username, bro");
+            displayMsg.setText("Enter a username");
             displayMsg.setVisible(true); //show the text
         }
-        else if (!username.getText().equals("") && password.getText().equals(""))
+
+        //password field is empty
+        else if (!username.getText().isEmpty() && password.getText().isEmpty())
         {
-            displayMsg.setText("Enter a password, loser");
+            displayMsg.setText("Enter a password");
             displayMsg.setVisible(true);
         }
+
+        //both fields are empty
         else if (username.getText().isEmpty() && password.getText().isEmpty())
         {
-            displayMsg.setText("You didn't write anything you waste of utter space");
+            displayMsg.setText("Fill in the missing fields");
             displayMsg.setVisible(true);
         }
         else
         {
-            JabberMessage reply = stream.exchange(message + " " + username.getText() + " " + password.getText()); //send the message and get the reply from the server
+            JabberMessage reply = stream.exchange("signin " + username.getText() + " " + password.getText()); //send the message and get the reply from the server
 
-            if (reply.getMessage().equals("signedin")) switchScene(event); //got the reply, switch the scene to the main page
+            if (reply.getMessage().equals("signedin")) switchScene(event, "MainPage.fxml"); //user signed in, switch the scene to the main page
             else if (reply.getMessage().equals("incorrect-pass"))
             {
-                displayMsg.setText("Incorrect Password. What kind of dumbass doesn't know his own password? ");
+                displayMsg.setText("Incorrect Password. Try again");
                 displayMsg.setVisible(true);
             }
             else
             {
-                displayMsg.setText("Action failed. This must be embarrassing for you bro");
+                displayMsg.setText("Action failed. This might be because you don't have an account. Try signing up!");
                 displayMsg.setVisible(true);
             }
         }
@@ -67,16 +63,18 @@ public class LoginController
     /**
      * Hides the current scene and switches to the new scene
      * @param event successful sign-in or sign-up
-     * @throws IOException
      */
-    private void switchScene(final ActionEvent event) throws IOException
+    private void switchScene(final ActionEvent event, final String page) throws IOException
     {
         ((Node)event.getSource()).getScene().getWindow().hide(); //hide the current scene
-        var fxmlLoader = new FXMLLoader(ClientMain.class.getResource("MainPage.fxml")); //get the fxml file info
+        var fxmlLoader = new FXMLLoader(ClientMain.class.getResource(page)); //get the fxml file info
         var scene = new Scene(fxmlLoader.load()); //feed the fxml file info into the scene
 
         var stage = new Stage(); //instantiate new stage object
-        stage.setTitle("Welcome " + username.getText()); //setting the toolbar title
+
+        if (page.equals("MainPage.fxml")) stage.setTitle("Welcome " + username.getText()); //setting the toolbar title
+        else if (page.equals("Signup.fxml")) stage.setTitle("Your username is going to be your first name and last name mashed together");
+
         stage.setResizable(false); //not allowing stage to be resized
         stage.setScene(scene); //add the scene to the stage
 
